@@ -1,11 +1,22 @@
+"use client"
+
+import { useState } from "react"
+
 import { Link } from "react-router-dom"
 import { useTheme } from "../contexts/ThemeContext"
 import { useLanguage } from "../contexts/LanguageContext"
-import { SunIcon, MoonIcon } from "@heroicons/react/24/outline"
+import { SunIcon, MoonIcon, UserIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid"
 import cvIcon from "../images/curriculum-vitae.svg";
+
 const Navbar = ({ toggleDarkMode }) => {
   const { theme } = useTheme()
   const { language, setLanguage } = useLanguage()
+  const [isLoggedIn, setIsLoggedIn] = useState(false) // This should be managed by your authentication system
+
+  const handleLogout = () => {
+    // Implement logout logic here
+    setIsLoggedIn(false)
+  }
 
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-lg transition-colors duration-300">
@@ -24,16 +35,10 @@ const Navbar = ({ toggleDarkMode }) => {
                   Home
                 </Link>
                 <Link
-                  to="/dashboard"
+                  to="/about"
                   className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/services"
-                  className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Services
+                  AboutUS
                 </Link>
                 <Link
                   to="/ai-resume-builder"
@@ -52,6 +57,12 @@ const Navbar = ({ toggleDarkMode }) => {
                   className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Recruiter Dashboard
+                </Link>
+                <Link
+                  to="/services"
+                  className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Services
                 </Link>
                 <Link
                   to="/contact"

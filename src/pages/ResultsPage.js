@@ -2,26 +2,14 @@
 
 import { useState, useRef } from "react"
 import { motion } from "framer-motion"
-import { DocumentArrowDownIcon, LightBulbIcon, ArrowPathIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline"
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts"
+import { DocumentArrowDownIcon, LightBulbIcon } from "@heroicons/react/24/outline"
+
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
 
 const ResultsPage = () => {
-  const [activeTab, setActiveTab] = useState("overview")
   const [isEnhancementModalOpen, setIsEnhancementModalOpen] = useState(false)
+  const [openFAQ, setOpenFAQ] = useState(null)
   const resultsRef = useRef(null)
 
   const mockResults = {
@@ -73,119 +61,28 @@ const ResultsPage = () => {
     pdf.save("resume_analysis_report.pdf")
   }
 
-  const renderActiveTabContent = () => {
-    switch (activeTab) {
-      case "overview":
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-4">Overall Score</h3>
-              <div className="flex items-center justify-center">
-                <div className="relative w-32 h-32">
-                  <svg className="w-full h-full" viewBox="0 0 36 36">
-                    <path
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      fill="none"
-                      stroke="#E5E7EB"
-                      strokeWidth="3"
-                    />
-                    <path
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      fill="none"
-                      stroke="#3B82F6"
-                      strokeWidth="3"
-                      strokeDasharray={`${mockResults.overallScore}, 100`}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                      {mockResults.overallScore}%
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-4">Key Metrics</h3>
-              <ul className="space-y-2">
-                <li className="flex justify-between items-center">
-                  <span>ATS Compatibility:</span>
-                  <span className="font-semibold">{mockResults.atsCompatibility}%</span>
-                </li>
-                <li className="flex justify-between items-center">
-                  <span>Content Quality:</span>
-                  <span className="font-semibold">{mockResults.contentQuality}%</span>
-                </li>
-                <li className="flex justify-between items-center">
-                  <span>Readability:</span>
-                  <span className="font-semibold">{mockResults.readabilityScore}%</span>
-                </li>
-                <li className="flex justify-between items-center">
-                  <span>Keyword Optimization:</span>
-                  <span className="font-semibold">{mockResults.keywordOptimization}%</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        )
-      case "detailed":
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-4">Resume Composition</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={pieChartData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {pieChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Legend />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-4">Job Role Match</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={mockResults.jobRoleMatch}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="role" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="match" fill="#8884d8" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        )
-      case "suggestions":
-        return (
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4">AI-Powered Suggestions</h3>
-            <ul className="space-y-2">
-              {mockResults.suggestions.map((suggestion, index) => (
-                <li key={index} className="flex items-start">
-                  <LightBulbIcon className="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" />
-                  <span>{suggestion}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )
-      default:
-        return null
-    }
-  }
+  const faqs = [
+    {
+      question: "What is ATS compatibility?",
+      answer:
+        "ATS compatibility refers to how well your resume can be parsed by Applicant Tracking Systems used by employers. A higher score means better chances of your resume being properly read and processed by these systems.",
+    },
+    {
+      question: "How can I improve my resume's keyword optimization?",
+      answer:
+        "To improve keyword optimization, carefully review the job description and incorporate relevant industry terms and skills throughout your resume. Be sure to use these keywords naturally and in context.",
+    },
+    {
+      question: "What factors contribute to the content quality score?",
+      answer:
+        "The content quality score considers factors such as the use of action verbs, quantifiable achievements, relevant skills, and overall clarity and conciseness of your resume content.",
+    },
+    {
+      question: "How does AI-powered resume enhancement work?",
+      answer:
+        "AI-powered enhancement analyzes your resume against industry standards and job market trends. It then provides tailored suggestions to improve your resume's effectiveness, such as rephrasing sentences, reorganizing sections, or adding missing key information.",
+    },
+  ]
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -195,69 +92,95 @@ const ResultsPage = () => {
         transition={{ duration: 0.5 }}
         className="text-center mb-8"
       >
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Resume Analysis Results</h1>
+        <h1 className="text-4xl font-bold text-gray-600 dark:text-white mb-4">Resume Analysis Results</h1>
         <p className="text-xl text-gray-600 dark:text-gray-300">
           Here's a detailed breakdown of your resume's performance.
         </p>
       </motion.div>
 
-      <div className="mb-8">
-        <div className="sm:hidden">
-          <select
-            id="tabs"
-            name="tabs"
-            className="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-            value={activeTab}
-            onChange={(e) => setActiveTab(e.target.value)}
-          >
-            <option value="overview">Overview</option>
-            <option value="detailed">Detailed Analysis</option>
-            <option value="suggestions">Suggestions</option>
-          </select>
+      <div ref={resultsRef}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h3 className="text-xl font-semibold mb-4">Overall Score</h3>
+            <div className="flex items-center justify-center">
+              <div className="relative w-32 h-32">
+                <svg className="w-full h-full" viewBox="0 0 36 36">
+                  <path
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke="#E5E7EB"
+                    strokeWidth="3"
+                  />
+                  <path
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke="#3B82F6"
+                    strokeWidth="3"
+                    strokeDasharray={`${mockResults.overallScore}, 100`}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-3xl font-bold text-gray-600 dark:text-white">{mockResults.overallScore}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h3 className="text-xl font-semibold mb-4">Key Metrics</h3>
+            <ul className="space-y-2">
+              <li className="flex justify-between items-center">
+                <span>ATS Compatibility:</span>
+                <span className="font-semibold">{mockResults.atsCompatibility}%</span>
+              </li>
+              <li className="flex justify-between items-center">
+                <span>Content Quality:</span>
+                <span className="font-semibold">{mockResults.contentQuality}%</span>
+              </li>
+              <li className="flex justify-between items-center">
+                <span>Readability:</span>
+                <span className="font-semibold">{mockResults.readabilityScore}%</span>
+              </li>
+              <li className="flex justify-between items-center">
+                <span>Keyword Optimization:</span>
+                <span className="font-semibold">{mockResults.keywordOptimization}%</span>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="hidden sm:block">
-          <nav className="flex space-x-4" aria-label="Tabs">
-            {["overview", "detailed", "suggestions"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`${
-                  activeTab === tab ? "bg-indigo-100 text-indigo-700" : "text-gray-500 hover:text-gray-700"
-                } px-3 py-2 font-medium text-sm rounded-md`}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+          <h3 className="text-xl font-semibold mb-4">AI-Powered Suggestions</h3>
+          <ul className="space-y-2">
+            {mockResults.suggestions.map((suggestion, index) => (
+              <li key={index} className="flex items-start">
+                <LightBulbIcon className="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" />
+                <span>{suggestion}</span>
+              </li>
             ))}
-          </nav>
+          </ul>
         </div>
-      </div>
 
-      <div ref={resultsRef}>{renderActiveTabContent()}</div>
-
-      <div className="mt-8 flex justify-center space-x-4">
-        <button
-          onClick={handleDownloadPDF}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
-          Download PDF Report
-        </button>
-        <button
-          onClick={() => setIsEnhancementModalOpen(true)}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-        >
-          <ArrowPathIcon className="h-5 w-5 mr-2" />
-          AI-Powered Enhancement
-        </button>
-        <button
-          onClick={() => {
-            /* Implement version comparison logic */
-          }}
-          className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          <DocumentDuplicateIcon className="h-5 w-5 mr-2" />
-          Compare Versions
-        </button>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+          <h3 className="text-xl font-semibold mb-4">Frequently Asked Questions</h3>
+          {faqs.map((faq, index) => (
+            <div key={index} className="mb-4">
+              <button
+                className="flex justify-between items-center w-full text-left font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300"
+                onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+              >
+                <span>{faq.question}</span>
+                <svg
+                  className={`h-5 w-5 transform ${openFAQ === index ? "rotate-180" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {openFAQ === index && <p className="mt-2 text-gray-600 dark:text-gray-300">{faq.answer}</p>}
+            </div>
+          ))}
+        </div>
       </div>
 
       {isEnhancementModalOpen && (

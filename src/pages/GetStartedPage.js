@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
+import { CheckCircleIcon } from "@heroicons/react/24/solid"
 
 const GetStartedPage = () => {
   const features = [
@@ -10,7 +10,7 @@ const GetStartedPage = () => {
     "Industry-specific keyword recommendations",
     "Interview preparation tools",
     "Career coaching sessions",
-  ];
+  ]
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-blue-900">
@@ -113,7 +113,8 @@ const GetStartedPage = () => {
         </motion.div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default GetStartedPage;
+export default GetStartedPage
+

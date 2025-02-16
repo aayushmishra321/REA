@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { DocumentTextIcon, PlusIcon } from "@heroicons/react/24/outline"
+import { DocumentTextIcon, PlusIcon } from "@heroicons/react/24/solid"
+import jsPDF from "jspdf";
 
 const AIResumeBuilder = () => {
   const [step, setStep] = useState(1)
@@ -416,18 +417,30 @@ const AIResumeBuilder = () => {
                 Start Over
               </button>
               <button
-                onClick={() => {
-                  // Implement download functionality
-                  const element = document.createElement("a")
-                  const file = new Blob([generatedResume], { type: "text/plain" })
-                  element.href = URL.createObjectURL(file)
-                  element.download = "AI_Generated_Resume.txt"
-                  document.body.appendChild(element)
-                  element.click()
-                }}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Download Resume
+  onClick={() => {
+    const doc = new jsPDF();
+
+    // Add resume content to the PDF
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text("AI-Generated Resume", 20, 20);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    const textContent = generatedResume || "No resume data available";
+    
+    // Split text into lines for better formatting
+    const pageWidth = doc.internal.pageSize.getWidth() - 40;
+    const splitText = doc.splitTextToSize(textContent, pageWidth);
+
+    doc.text(splitText, 20, 40);
+
+    // Save the PDF
+    doc.save("AI_Generated_Resume.pdf");
+  }}
+  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+>
+  Download Resume
               </button>
             </div>
           </div>

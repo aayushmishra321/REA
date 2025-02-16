@@ -1,143 +1,166 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useNavigate } from "react-router-dom"
-import { CloudArrowUpIcon, DocumentCheckIcon, SparklesIcon } from "@heroicons/react/24/outline"
+import { Link } from "react-router-dom"
+import { motion } from "framer-motion"
+import ReCAPTCHA from "react-google-recaptcha"
+import { LockClosedIcon, EnvelopeIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid"
 
-export default function HomePage() {
-  const [isDragging, setIsDragging] = useState(false)
-  const [file, setFile] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
+const LoginPage = () => {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+  const [captchaValue, setCaptchaValue] = useState(null)
+  const [error, setError] = useState("")
 
-  const handleDragOver = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setIsDragging(true)
-  }
-
-  const handleDragLeave = () => {
-    setIsDragging(false)
-  }
-
-  const handleDrop = (e) => {
-    e.preventDefault()
-    setIsDragging(false)
-    const droppedFile = e.dataTransfer.files[0]
-    handleFile(droppedFile)
-  }
-
-  const handleFileInput = (e) => {
-    const selectedFile = e.target.files[0]
-    handleFile(selectedFile)
-  }
-
-  const handleFile = async (file) => {
-    if (file && (file.type === "application/pdf" || file.type.includes("word"))) {
-      setFile(file)
-      setIsLoading(true)
-      // Simulate file processing
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      setIsLoading(false)
-      navigate("/results", { state: { fileName: file.name } })
+    if (!captchaValue) {
+      setError("Please complete the reCAPTCHA")
+      return
     }
+    // Implement login logic here
+    console.log("Login submitted:", { email, password, rememberMe })
+  }
+
+  const handleSocialLogin = (provider) => {
+    // Implement social login logic here
+    console.log(`Logging in with ${provider}`)
   }
 
   return (
-    <div className="min-h-screen pt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl font-extrabold sm:text-5xl md:text-6xl">
-              <span className="block">AI-Powered</span>
-              <span className="block gradient-text">Resume Analyzer</span>
-            </h1>
-            <p className="mt-3 max-w-md mx-auto text-base text-gray-500 dark:text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              Get instant feedback on your resume. Our AI-powered tool analyzes your resume for ATS compatibility,
-              formatting, and content optimization.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mt-10 max-w-3xl mx-auto"
-          >
-            <div
-              className={`upload-zone ${isDragging ? "dragging" : ""}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-            >
-              <input
-                type="file"
-                id="file-upload"
-                className="sr-only"
-                accept=".pdf,.doc,.docx"
-                onChange={handleFileInput}
-              />
-              <label htmlFor="file-upload" className="cursor-pointer">
-                <div className="space-y-4 text-center">
-                  <div className="mx-auto h-12 w-12 text-gray-400">
-                    <CloudArrowUpIcon className="h-12 w-12" />
-                  </div>
-                  <div className="flex text-sm text-gray-600 dark:text-gray-400">
-                    <span className="relative cursor-pointer rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500">
-                      Upload a file
-                    </span>
-                    <p className="pl-1">or drag and drop</p>
-                  </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">PDF or Word up to 10MB</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-md w-full space-y-8"
+      >
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <input type="hidden" name="remember" defaultValue="true" />
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email-address" className="sr-only">
+                Email address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <EnvelopeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </div>
+                <input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <LockClosedIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  required
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                Remember me
               </label>
             </div>
-          </motion.div>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-20">
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-              <div className="score-card">
-                <DocumentCheckIcon className="h-8 w-8 text-primary-600 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">ATS Compatible</h3>
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                  Ensure your resume passes through Applicant Tracking Systems.
-                </p>
-              </div>
-              <div className="score-card">
-                <SparklesIcon className="h-8 w-8 text-primary-600 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">AI Analysis</h3>
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                  Get intelligent suggestions to improve your resume content.
-                </p>
-              </div>
-              <div className="score-card">
-                <DocumentCheckIcon className="h-8 w-8 text-primary-600 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Instant Results</h3>
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                  Receive detailed feedback and scoring within seconds.
-                </p>
-              </div>
+            <div className="text-sm">
+              <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Forgot your password?
+              </Link>
             </div>
-          </motion.div>
+          </div>
+
+          <div>
+            <ReCAPTCHA sitekey="YOUR_RECAPTCHA_SITE_KEY" onChange={(value) => setCaptchaValue(value)} />
+          </div>
+
+          {error && <div className="text-red-500 text-sm">{error}</div>}
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-gray-50 text-gray-500">Or continue with</span>
+            </div>
+          </div>
+
+          {/* Removed social login buttons */}
         </div>
-      </div>
 
-      <AnimatePresence>
-        {isLoading && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center"
-          >
-            <div className="glass p-8 rounded-xl flex flex-col items-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-              <p className="mt-4 text-gray-900 dark:text-white">Analyzing your resume...</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <div className="text-center">
+          <p className="mt-2 text-sm text-gray-600">
+            Don't have an account?{" "}
+            <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+              Sign up
+            </Link>
+          </p>
+        </div>
+      </motion.div>
     </div>
   )
 }
+
+export default LoginPage
 

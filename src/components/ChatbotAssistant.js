@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChatBubbleLeftRightIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { ChatBubbleLeftRightIcon, XMarkIcon } from "@heroicons/react/24/solid"
 
 const ChatbotAssistant = () => {
   const [isOpen, setIsOpen] = useState(false)

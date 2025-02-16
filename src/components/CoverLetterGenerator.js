@@ -2,7 +2,9 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { DocumentTextIcon } from "@heroicons/react/24/outline"
+import { DocumentTextIcon } from "@heroicons/react/24/solid"
+import jsPDF from "jspdf";
+
 
 const CoverLetterGenerator = () => {
   const [formData, setFormData] = useState({
@@ -170,20 +172,33 @@ ${formData.email} | ${formData.phone}
               {generatedLetter}
             </pre>
             <div className="mt-4">
-              <button
-                onClick={() => {
-                  // Implement download functionality
-                  const element = document.createElement("a")
-                  const file = new Blob([generatedLetter], { type: "text/plain" })
-                  element.href = URL.createObjectURL(file)
-                  element.download = "AI_Generated_Cover_Letter.txt"
-                  document.body.appendChild(element)
-                  element.click()
-                }}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Download Cover Letter
-              </button>
+            <button
+  onClick={() => {
+    const doc = new jsPDF();
+
+    // Add title
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text("AI-Generated Cover Letter", 20, 20);
+
+    // Set normal font
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    const textContent = generatedLetter || "No cover letter data available";
+
+    // Wrap text for proper formatting
+    const pageWidth = doc.internal.pageSize.getWidth() - 40;
+    const splitText = doc.splitTextToSize(textContent, pageWidth);
+
+    doc.text(splitText, 20, 40);
+
+    // Save the PDF
+    doc.save("AI_Generated_Cover_Letter.pdf");
+  }}
+  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+>
+  Download Cover Letter
+</button>
             </div>
           </div>
         </motion.div>

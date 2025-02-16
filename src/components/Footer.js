@@ -128,7 +128,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-12 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <p className="text-base text-gray-400 xl:text-center">&copy; 2023 Resume Analyzer AI. All rights reserved.</p>
+          <p className="text-base text-gray-400 xl:text-center">&copy; 2025 Resume Analyzer AI. All rights reserved.</p>
         </div>
       </div>
     </footer>

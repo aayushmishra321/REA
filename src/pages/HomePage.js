@@ -4,7 +4,7 @@ import { useState, useCallback } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDropzone } from "react-dropzone"
 import { motion } from "framer-motion"
-import { CloudArrowUpIcon, DocumentTextIcon, ChartBarIcon } from "@heroicons/react/24/outline"
+import { CloudArrowUpIcon, DocumentTextIcon, ChartBarIcon } from "@heroicons/react/24/solid"
 
 // First, install react-dropzone: npm install react-dropzone
 

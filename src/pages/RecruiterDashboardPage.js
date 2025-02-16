@@ -3,33 +3,16 @@
 import { useState, useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import { motion } from "framer-motion"
-import { CloudArrowUpIcon, DocumentDuplicateIcon, ArrowDownTrayIcon, StarIcon } from "@heroicons/react/24/outline"
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts"
+import { CloudArrowUpIcon, FunnelIcon, ArrowsUpDownIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 
 const RecruiterDashboardPage = () => {
   const [files, setFiles] = useState([])
   const [rankings, setRankings] = useState([])
-  const [selectedResumes, setSelectedResumes] = useState([])
+  const [filterCriteria, setFilterCriteria] = useState("all")
+  const [sortCriteria, setSortCriteria] = useState("score")
+  const [searchTerm, setSearchTerm] = useState("")
   const [dashboardData, setDashboardData] = useState({
-    skillsDistribution: [
-      { name: "JavaScript", value: 30 },
-      { name: "Python", value: 25 },
-      { name: "Java", value: 20 },
-      { name: "C++", value: 15 },
-      { name: "Ruby", value: 10 },
-    ],
     candidateScores: [
       { name: "90-100", count: 10 },
       { name: "80-89", count: 25 },
@@ -43,31 +26,35 @@ const RecruiterDashboardPage = () => {
     setFiles(acceptedFiles)
     // Simulate ATS score calculation and ranking
     const simulatedRankings = acceptedFiles.map((file, index) => ({
-      name: file.name,
-      score: Math.floor(Math.random() * 41) + 60, // Random score between 60 and 100
-      keywords: ["JavaScript", "React", "Node.js"].slice(0, Math.floor(Math.random() * 3) + 1),
+      id: index,
+      candidateName: `Candidate ${index + 1}`,
+      fileName: file.name,
+      score: Math.floor(Math.random() * 41) + 60,
+      experience: Math.floor(Math.random() * 10) + 1,
+      skills: ["JavaScript", "React", "Node.js"].slice(0, Math.floor(Math.random() * 3) + 1).join(", "),
     }))
     setRankings(simulatedRankings.sort((a, b) => b.score - a.score))
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"]
-
-  const handleCompare = () => {
-    // Implement comparison logic
-    console.log("Comparing selected resumes:", selectedResumes)
-  }
-
-  const handleExport = () => {
-    // Implement export logic
-    console.log("Exporting rankings")
-  }
-
-  const handleShortlist = () => {
-    // Implement shortlist logic
-    console.log("Shortlisting selected candidates")
-  }
+  const filteredAndSortedRankings = rankings
+    .filter((resume) => {
+      if (filterCriteria === "all") return true
+      if (filterCriteria === "highScore") return resume.score >= 80
+      if (filterCriteria === "experienced") return resume.experience >= 5
+      return true
+    })
+    .filter(
+      (resume) =>
+        resume.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        resume.candidateName.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
+    .sort((a, b) => {
+      if (sortCriteria === "score") return b.score - a.score
+      if (sortCriteria === "experience") return b.experience - a.experience
+      return 0
+    })
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -83,7 +70,8 @@ const RecruiterDashboardPage = () => {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+      <div className="grid grid-cols-1 gap-8 mb-12">
+        {/* Bulk Resume Upload Section */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-4">Bulk Resume Upload</h2>
           <div
@@ -105,43 +93,7 @@ const RecruiterDashboardPage = () => {
           )}
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-4">ATS Rankings</h2>
-          <ul className="space-y-2">
-            {rankings.map((resume, index) => (
-              <li key={index} className="flex items-center justify-between">
-                <span>{resume.name}</span>
-                <span className="font-semibold">{resume.score}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-4">Skills Distribution</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={dashboardData.skillsDistribution}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {dashboardData.skillsDistribution.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-
+        {/* Candidate Scores Section */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-4">Candidate Scores</h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -155,30 +107,86 @@ const RecruiterDashboardPage = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
-      </div>
 
-      <div className="flex justify-center space-x-4 mb-12">
-        <button
-          onClick={handleCompare}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          <DocumentDuplicateIcon className="h-5 w-5 mr-2" />
-          Compare Selected
-        </button>
-        <button
-          onClick={handleExport}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-        >
-          <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
-          Export Rankings
-        </button>
-        <button
-          onClick={handleShortlist}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-        >
-          <StarIcon className="h-5 w-5 mr-2" />
-          Shortlist Candidates
-        </button>
+        {/* ATS Rankings Section */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-semibold mb-4">ATS Rankings</h2>
+          <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
+            <div className="flex items-center">
+              <FunnelIcon className="h-5 w-5 text-gray-400 mr-2" />
+              <select
+                value={filterCriteria}
+                onChange={(e) => setFilterCriteria(e.target.value)}
+                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              >
+                <option value="all">All Resumes</option>
+                <option value="highScore">High Scores (80+)</option>
+                <option value="experienced">Experienced (5+ years)</option>
+              </select>
+            </div>
+            <div className="flex items-center">
+              <ArrowsUpDownIcon className="h-5 w-5 text-gray-400 mr-2" />
+              <select
+                value={sortCriteria}
+                onChange={(e) => setSortCriteria(e.target.value)}
+                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              >
+                <option value="score">Sort by Score</option>
+                <option value="experience">Sort by Experience</option>
+              </select>
+            </div>
+          </div>
+          <div className="mb-4">
+            <div className="relative">
+              <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute top-3 left-3" />
+              <input
+                type="text"
+                placeholder="Search resumes..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+          </div>
+
+          {/* Table View for ATS Rankings */}
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Candidate Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    File Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ATS Score
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Experience
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Top Skills
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredAndSortedRankings.map((resume) => (
+                  <tr key={resume.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {resume.candidateName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{resume.fileName}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{resume.score}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{resume.experience} years</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{resume.skills}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   )

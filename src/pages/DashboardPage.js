@@ -11,7 +11,7 @@ import {
   TrashIcon,
   ArrowPathIcon,
   DocumentDuplicateIcon,
-} from "@heroicons/react/24/outline"
+} from "@heroicons/react/24/solid"
 import {
   LineChart,
   Line,

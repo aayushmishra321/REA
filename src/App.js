@@ -6,16 +6,17 @@ import { ThemeProvider } from "./contexts/ThemeContext"
 import { LanguageProvider } from "./contexts/LanguageContext"
 import Navbar from "./components/Navbar"
 import HomePage from "./pages/HomePage"
+import AboutPage from "./pages/AboutPage"
 import ResultsPage from "./pages/ResultsPage"
 import ContactPage from "./pages/ContactPage"
-import DashboardPage from "./pages/DashboardPage"
 import ServicesPage from "./pages/ServicesPage"
 import GetStartedPage from "./pages/GetStartedPage"
 import AIResumeBuilder from "./components/AIResumeBuilder"
 import CoverLetterGenerator from "./components/CoverLetterGenerator"
 import RecruiterDashboardPage from "./pages/RecruiterDashboardPage"
+import RegistrationPage from "./pages/RegistrationPage"
 import Footer from "./components/Footer"
-import ChatbotAssistant from "./components/ChatbotAssistant"
+
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
@@ -35,16 +36,16 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/results" element={<ResultsPage />} />
                 <Route path="/contact" element={<ContactPage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/about" element={<AboutPage />} />
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/get-started" element={<GetStartedPage />} />
                 <Route path="/ai-resume-builder" element={<AIResumeBuilder />} />
                 <Route path="/cover-letter-generator" element={<CoverLetterGenerator />} />
                 <Route path="/recruiter-dashboard" element={<RecruiterDashboardPage />} />
+                <Route path="/register" element={<RegistrationPage />} />
               </Routes>
             </main>
             <Footer />
-            <ChatbotAssistant />
           </div>
         </Router>
       </LanguageProvider>

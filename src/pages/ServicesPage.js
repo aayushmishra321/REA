@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { DocumentTextIcon, ChartBarIcon, AcademicCapIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline"
+import { DocumentTextIcon, ChartBarIcon, AcademicCapIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid"
 
 const ServicesPage = () => {
   const [filter, setFilter] = useState("all")
@@ -113,9 +113,50 @@ const ServicesPage = () => {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          className="mt-20 text-center"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Why Choose ResumeAI?</h2>
+          <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                title: "AI-Powered Analysis",
+                description: "Cutting-edge AI technology for accurate and insightful resume analysis.",
+              },
+              {
+                title: "Expert Career Advice",
+                description: "Guidance from experienced professionals in various industries.",
+              },
+              {
+                title: "Personalized Approach",
+                description: "Tailored solutions to meet your unique career goals and challenges.",
+              },
+              {
+                title: "Continuous Support",
+                description: "Ongoing assistance throughout your job search and career journey.",
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 + index * 0.1, duration: 0.5 }}
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg bg-opacity-50 dark:bg-opacity-50"
+              >
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{item.title}</h3>
+                <p className="mt-2 text-gray-500 dark:text-gray-400">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </div>
   )
 }
 
 export default ServicesPage
+
