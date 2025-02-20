@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import ReCAPTCHA from "react-google-recaptcha"
-import { LockClosedIcon, EnvelopeIcon, UserIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid"
+import { LockClosedIcon, EnvelopeIcon, UserIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"
 
 const RegistrationPage = () => {
   const [formData, setFormData] = useState({

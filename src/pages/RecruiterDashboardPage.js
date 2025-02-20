@@ -193,4 +193,3 @@ const RecruiterDashboardPage = () => {
 }
 
 export default RecruiterDashboardPage
-

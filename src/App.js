@@ -14,7 +14,7 @@ import GetStartedPage from "./pages/GetStartedPage"
 import AIResumeBuilder from "./components/AIResumeBuilder"
 import CoverLetterGenerator from "./components/CoverLetterGenerator"
 import RecruiterDashboardPage from "./pages/RecruiterDashboardPage"
-import RegistrationPage from "./pages/RegistrationPage"
+// import RegistrationPage from "./pages/RegistrationPage"
 import Footer from "./components/Footer"
 
 
@@ -39,10 +39,10 @@ function App() {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/get-started" element={<GetStartedPage />} />
-                <Route path="/ai-resume-builder" element={<AIResumeBuilder />} />
+                { <Route path="/airesumebuilder" element={<AIResumeBuilder />} />}
                 <Route path="/cover-letter-generator" element={<CoverLetterGenerator />} />
                 <Route path="/recruiter-dashboard" element={<RecruiterDashboardPage />} />
-                <Route path="/register" element={<RegistrationPage />} />
+                {/* <Route path="/register" element={<RegistrationPage />} /> */}
               </Routes>
             </main>
             <Footer />

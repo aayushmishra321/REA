@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { MapPinIcon, PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/solid"
+import { MapPinIcon, PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/outline"
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { DocumentTextIcon, ChartBarIcon, AcademicCapIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid"
+import { DocumentTextIcon, ChartBarIcon, AcademicCapIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline"
 
 const ServicesPage = () => {
   const [filter, setFilter] = useState("all")

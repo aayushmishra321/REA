@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react"
 import { motion } from "framer-motion"
-import { DocumentArrowDownIcon, LightBulbIcon } from "@heroicons/react/24/outline"
+import { ArrowDownTrayIcon, LightBulbIcon, ArrowPathIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline"
 
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
@@ -232,4 +232,3 @@ const ResultsPage = () => {
 }
 
 export default ResultsPage
-

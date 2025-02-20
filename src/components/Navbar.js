@@ -5,7 +5,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useTheme } from "../contexts/ThemeContext"
 import { useLanguage } from "../contexts/LanguageContext"
-import { SunIcon, MoonIcon, UserIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid"
+import { SunIcon, MoonIcon, UserIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline"
 import cvIcon from "../images/curriculum-vitae.svg";
 
 const Navbar = ({ toggleDarkMode }) => {
@@ -34,17 +34,23 @@ const Navbar = ({ toggleDarkMode }) => {
                 >
                   Home
                 </Link>
+                {/* <Link
+                  to="/dashboard"
+                  className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Dashboard
+                </Link> */}
                 <Link
                   to="/about"
                   className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  AboutUS
+                  AboutPage
                 </Link>
                 <Link
-                  to="/ai-resume-builder"
+                  to="/airesumebuilder"
                   className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  AI Resume Builder
+                  AIResumeBuilder
                 </Link>
                 <Link
                   to="/cover-letter-generator"
@@ -89,6 +95,7 @@ const Navbar = ({ toggleDarkMode }) => {
             >
               {theme === "dark" ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
             </button>
+            
           </div>
         </div>
       </div>
