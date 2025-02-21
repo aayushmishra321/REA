@@ -85,14 +85,16 @@ const ResultsPage = () => {
   ]
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12 min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="text-center mb-8"
       >
-        <h1 className="text-4xl font-bold text-gray-600 dark:text-white mb-4">Resume Analysis Results</h1>
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        Resume Analysis Results
+            </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300">
           Here's a detailed breakdown of your resume's performance.
         </p>
