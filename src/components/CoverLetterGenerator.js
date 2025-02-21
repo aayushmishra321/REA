@@ -5,11 +5,36 @@ import { useReactToPrint } from "react-to-print"
 import { DocumentTextIcon, PencilIcon, ArrowDownTrayIcon, SunIcon, MoonIcon } from "@heroicons/react/24/outline"
 import { jsPDF } from "jspdf"
 import html2canvas from "html2canvas"
+import { motion } from "framer-motion"
 
 // Import cover letter templates
 import ModernTemplate from "./coverLetterTemplates/ModernTemplate"
 import ClassicTemplate from "./coverLetterTemplates/ClassicTemplate"
 import CreativeTemplate from "./coverLetterTemplates/CreativeTemplate"
+
+const buttonVariants = {
+  hover: { scale: 1.05, transition: { duration: 0.2 } },
+  tap: { scale: 0.95 },
+}
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.5 },
+  },
+}
 
 const CoverLetterGenerator = () => {
   const [coverLetterData, setCoverLetterData] = useState({
@@ -196,13 +221,21 @@ ${coverLetterData.personalDetails.name}`
     </div>
   )
 
-  const renderPreview = () => {
-    const TemplateComponent = {
-      modern: ModernTemplate,
-      classic: ClassicTemplate,
-      creative: CreativeTemplate,
-    }[activeTemplate]
+  const getTemplateComponent = () => {
+    switch(activeTemplate) {
+      case "modern":
+        return ModernTemplate
+      case "classic":
+        return ClassicTemplate
+      case "creative":
+        return CreativeTemplate
+      default:
+        return ModernTemplate
+    }
+  }
 
+  const renderPreview = () => {
+    const TemplateComponent = getTemplateComponent()
     return (
       <div ref={coverLetterRef} className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
         <TemplateComponent data={coverLetterData} theme={theme} />
@@ -211,56 +244,202 @@ ${coverLetterData.personalDetails.name}`
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Cover Letter Generator</h1>
-      <div className="flex justify-between mb-4">
-        <div>
-          <button
-            onClick={() => setView(view === "form" ? "preview" : "form")}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 transition-all duration-500">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <motion.div initial="hidden" animate="visible" variants={containerVariants} className="space-y-8">
+          <motion.div variants={itemVariants} className="text-center">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Cover Letter Generator
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300">
+              Create professional cover letters tailored to your job applications
+            </p>
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="flex justify-between mb-8">
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              onClick={() => setView(view === "form" ? "preview" : "form")}
+              className="inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              {view === "form" ? (
+                <>
+                  <DocumentTextIcon className="mr-2 h-5 w-5" />
+                  Preview
+                </>
+              ) : (
+                <>
+                  <PencilIcon className="mr-2 h-5 w-5" />
+                  Edit
+                </>
+              )}
+            </motion.button>
+
+            <div className="flex space-x-4">
+              {/* Template selector and other controls with enhanced styling */}
+              <select
+                value={activeTemplate}
+                onChange={(e) => setActiveTemplate(e.target.value)}
+                className="px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg focus:ring-2 focus:ring-indigo-500 transition-all duration-300"
+              >
+                <option value="modern">Modern Template</option>
+                <option value="classic">Classic Template</option>
+                <option value="creative">Creative Template</option>
+              </select>
+
+              <motion.button
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                className="inline-flex items-center px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                {theme === "light" ? (
+                  <MoonIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                ) : (
+                  <SunIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                )}
+              </motion.button>
+
+              <motion.button
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+                onClick={handleDownloadPDF}
+                className="inline-flex items-center px-6 py-2 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <ArrowDownTrayIcon className="mr-2 h-5 w-5" />
+                Download PDF
+              </motion.button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className="bg-white/90 dark:bg-gray-800/90 rounded-2xl shadow-xl backdrop-blur-lg border border-gray-200 dark:border-gray-700 p-8"
           >
             {view === "form" ? (
-              <>
-                <DocumentTextIcon className="mr-2 h-5 w-5" />
-                Preview
-              </>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-8"
+              >
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">Personal Details</h3>
+                  <div className="mt-2 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    {Object.keys(coverLetterData.personalDetails).map((field) => (
+                      <div key={field} className="sm:col-span-3">
+                        <label htmlFor={field} className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                          {field.charAt(0).toUpperCase() + field.slice(1)}
+                        </label>
+                        <input
+                          type="text"
+                          name={field}
+                          id={field}
+                          value={coverLetterData.personalDetails[field]}
+                          onChange={(e) => handleInputChange("personalDetails", field, e.target.value)}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">Recipient Details</h3>
+                  <div className="mt-2 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    {Object.keys(coverLetterData.recipientDetails).map((field) => (
+                      <div key={field} className="sm:col-span-3">
+                        <label htmlFor={field} className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                          {field.charAt(0).toUpperCase() + field.slice(1)}
+                        </label>
+                        <input
+                          type="text"
+                          name={field}
+                          id={field}
+                          value={coverLetterData.recipientDetails[field]}
+                          onChange={(e) => handleInputChange("recipientDetails", field, e.target.value)}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">Job Description</h3>
+                  <div className="mt-2">
+                    <textarea
+                      id="jobDescription"
+                      name="jobDescription"
+                      rows={4}
+                      value={coverLetterData.jobDescription}
+                      onChange={(e) => handleInputChange("jobDescription", "jobDescription", e.target.value)}
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      placeholder="Paste the job description here..."
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">Letter Content</h3>
+                  <div className="mt-2 space-y-4">
+                    {Object.keys(coverLetterData.letterContent).map((field) => (
+                      <div key={field}>
+                        <label
+                          htmlFor={field}
+                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize"
+                        >
+                          {field}
+                        </label>
+                        <textarea
+                          id={field}
+                          name={field}
+                          rows={field === "body" ? 6 : 3}
+                          value={coverLetterData.letterContent[field]}
+                          onChange={(e) => handleInputChange("letterContent", field, e.target.value)}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={generateAICoverLetter}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Generate AI Cover Letter
+                  </button>
+                </div>
+              </motion.div>
             ) : (
-              <>
-                <PencilIcon className="mr-2 h-5 w-5" />
-                Edit
-              </>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8"
+              >
+                <div ref={coverLetterRef} className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+                  {(() => {
+                    const TemplateComponent = getTemplateComponent();
+                    return TemplateComponent && <TemplateComponent data={coverLetterData} theme={theme} />;
+                  })()}
+                </div>
+              </motion.div>
             )}
-          </button>
-        </div>
-        <div className="flex space-x-4">
-          <select
-            value={activeTemplate}
-            onChange={(e) => setActiveTemplate(e.target.value)}
-            className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-          >
-            <option value="modern">Modern Template</option>
-            <option value="classic">Classic Template</option>
-            <option value="creative">Creative Template</option>
-          </select>
-          <button
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
-          >
-            {theme === "light" ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
-          </button>
-          <button
-            onClick={handleDownloadPDF}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          >
-            <ArrowDownTrayIcon className="mr-2 h-5 w-5" />
-            Download PDF
-          </button>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-      <div className="mt-8">{view === "form" ? renderForm() : renderPreview()}</div>
     </div>
   )
 }
 
 export default CoverLetterGenerator
-

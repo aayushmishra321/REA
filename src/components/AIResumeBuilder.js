@@ -1,8 +1,6 @@
 "use client"
 
-
-import React, { useState, useRef, useEffect } from "react"
-import { useReactToPrint } from "react-to-print"
+import { useState, useRef, useEffect } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { saveAs } from "file-saver"
@@ -87,12 +85,41 @@ const ResumePreview = ({
   setLayout,
   setDarkMode,
   handleExportPDF,
-  handleExportDOCX,
   handleExportPNG,
 }) => {
-  const TemplateComponent = templates[template]
   const resumeRef = useRef()
   const [zoom, setZoom] = useState(1)
+
+  const handleExportPDFClick = async () => {
+    try {
+      const canvas = await html2canvas(resumeRef.current, { scale: 2 })
+      const imgData = canvas.toDataURL("image/png")
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      })
+      pdf.addImage(imgData, "PNG", 0, 0, 210, 297)
+      pdf.save("resume.pdf")
+    } catch (error) {
+      console.error("Error exporting PDF:", error)
+      alert("Failed to export as PDF. Please try again.")
+    }
+  }
+
+  const handleExportPNGClick = async () => {
+    try {
+      const canvas = await html2canvas(resumeRef.current, { scale: 2 })
+      canvas.toBlob((blob) => {
+        saveAs(blob, "resume.png")
+      })
+    } catch (error) {
+      console.error("Error exporting PNG:", error)
+      alert("Failed to export as PNG. Please try again.")
+    }
+  }
+
+  const TemplateComponent = templates[template] || templates.modern
 
   const buttonStyles =
     "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200"
@@ -180,32 +207,28 @@ const ResumePreview = ({
           </div>
         </div>
         <div className="flex flex-wrap items-center justify-between mt-6">
-            <button onClick={() => setDarkMode(!darkMode)} className={secondaryButtonStyles}>
-              {darkMode ? <SunIcon className="h-5 w-5 mr-2" /> : <MoonIcon className="h-5 w-5 mr-2" />}
-              {darkMode ? "Light Mode" : "Dark Mode"}
+          <button onClick={() => setDarkMode(!darkMode)} className={secondaryButtonStyles}>
+            {darkMode ? <SunIcon className="h-5 w-5 mr-2" /> : <MoonIcon className="h-5 w-5 mr-2" />}
+            {darkMode ? "Light Mode" : "Dark Mode"}
+          </button>
+          <div className="flex space-x-2 mt-4 sm:mt-0">
+            <button
+              onClick={handleExportPDFClick}
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md"
+            >
+              <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
+              PDF
             </button>
-            <div className="flex space-x-2 mt-4 sm:mt-0">
-              <button onClick={handleExportPDF} className={primaryButtonStyles}>
-                <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
-                PDF
-              </button>
-              <button
-                onClick={handleExportDOCX}
-                className={`${primaryButtonStyles} bg-purple-600 hover:bg-purple-700 focus:ring-purple-500`}
-              >
-                <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
-                DOCX
-              </button>
-              <button
-                onClick={handleExportPNG}
-                className={`${primaryButtonStyles} bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500`}
-              >
-                <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
-                PNG
-              </button>
-            </div>
+            <button
+              onClick={handleExportPNGClick}
+              className="inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md"
+            >
+              <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
+              PNG
+            </button>
           </div>
         </div>
+      </div>
       {/* Resume Preview Area - Updated styling */}
       <div className="relative">
         <div className="absolute inset-0 bg-gray-100 dark:bg-gray-900 rounded-lg" />
@@ -296,51 +319,49 @@ const ResumePreview = ({
                   </div>
                 )}
                 {/* Volunteering */}
-{data.volunteering.length > 0 && (
-  <div className="mb-8">
-    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Volunteering</h2>
-    <div className="space-y-4">
-      {data.volunteering.map((volunteer, index) => (
-        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
-          <h3 className="font-semibold text-gray-800 dark:text-gray-200">{volunteer.name}</h3>
-          <p className="text-gray-600 dark:text-gray-400">{volunteer.description}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+                {data.volunteering.length > 0 && (
+                  <div className="mb-8">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Volunteering</h2>
+                    <div className="space-y-4">
+                      {data.volunteering.map((volunteer, index) => (
+                        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                          <h3 className="font-semibold text-gray-800 dark:text-gray-200">{volunteer.name}</h3>
+                          <p className="text-gray-600 dark:text-gray-400">{volunteer.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-{/* Awards */}
-{data.awards.length > 0 && (
-  <div className="mb-8">
-    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Awards</h2>
-    <div className="space-y-4">
-      {data.awards.map((award, index) => (
-        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
-          <h3 className="font-semibold text-gray-800 dark:text-gray-200">{award.name}</h3>
-          <p className="text-gray-600 dark:text-gray-400">{award.description}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+                {/* Awards */}
+                {data.awards.length > 0 && (
+                  <div className="mb-8">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Awards</h2>
+                    <div className="space-y-4">
+                      {data.awards.map((award, index) => (
+                        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                          <h3 className="font-semibold text-gray-800 dark:text-gray-200">{award.name}</h3>
+                          <p className="text-gray-600 dark:text-gray-400">{award.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-{/* Publications */}
-{data.publications.length > 0 && (
-  <div className="mb-8">
-    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Publications</h2>
-    <div className="space-y-4">
-      {data.publications.map((publication, index) => (
-        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
-          <h3 className="font-semibold text-gray-800 dark:text-gray-200">{publication.name}</h3>
-          <p className="text-gray-600 dark:text-gray-400">{publication.description}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-
-
+                {/* Publications */}
+                {data.publications.length > 0 && (
+                  <div className="mb-8">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Publications</h2>
+                    <div className="space-y-4">
+                      {data.publications.map((publication, index) => (
+                        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                          <h3 className="font-semibold text-gray-800 dark:text-gray-200">{publication.name}</h3>
+                          <p className="text-gray-600 dark:text-gray-400">{publication.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Additional Sections */}
                 {data.certifications.length > 0 && (
@@ -465,8 +486,6 @@ const AIResumeBuilder = () => {
     }))
   }
 
-
-
   const handleExportPDF = async () => {
     try {
       const canvas = await html2canvas(resumeRef.current, { scale: 2 })
@@ -506,7 +525,7 @@ const AIResumeBuilder = () => {
               new Paragraph({
                 text: `Location: ${resumeData.personalDetails.location}`,
               }),
-  
+
               // Summary
               new Paragraph({
                 text: "Summary",
@@ -515,7 +534,7 @@ const AIResumeBuilder = () => {
               new Paragraph({
                 text: resumeData.summary,
               }),
-  
+
               // Experience
               new Paragraph({
                 text: "Experience",
@@ -533,7 +552,7 @@ const AIResumeBuilder = () => {
                   text: exp.description,
                 }),
               ]),
-  
+
               // Education
               new Paragraph({
                 text: "Education",
@@ -548,7 +567,7 @@ const AIResumeBuilder = () => {
                   text: edu.graduationDate,
                 }),
               ]),
-  
+
               // Skills
               new Paragraph({
                 text: "Skills",
@@ -557,7 +576,7 @@ const AIResumeBuilder = () => {
               new Paragraph({
                 text: resumeData.skills.map((skill) => skill.name).join(", "),
               }),
-  
+
               // Volunteering
               new Paragraph({
                 text: "Volunteering",
@@ -572,7 +591,7 @@ const AIResumeBuilder = () => {
                   text: volunteer.description,
                 }),
               ]),
-  
+
               // Awards
               new Paragraph({
                 text: "Awards",
@@ -587,7 +606,7 @@ const AIResumeBuilder = () => {
                   text: award.description,
                 }),
               ]),
-  
+
               // Publications
               new Paragraph({
                 text: "Publications",
@@ -605,16 +624,16 @@ const AIResumeBuilder = () => {
             ],
           },
         ],
-      });
-  
+      })
+
       // Generate and download the DOCX file
       Packer.toBlob(doc).then((blob) => {
-        saveAs(blob, "Resume.docx");
-      });
+        saveAs(blob, "Resume.docx")
+      })
     } catch (error) {
-      console.error("Error generating DOCX:", error);
+      console.error("Error generating DOCX:", error)
     }
-  };
+  }
 
   const handleExportPNG = async () => {
     try {
@@ -795,7 +814,6 @@ const AIResumeBuilder = () => {
               </button>
             </div>
 
-
             {/* Skills Section */}
             <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
               <h2 className="text-2xl font-semibold mb-4">Skills</h2>
@@ -931,8 +949,8 @@ const AIResumeBuilder = () => {
               handleExportDOCX={handleExportDOCX}
               handleExportPNG={handleExportPNG}
             />
-             {/* ATS Optimization */}
-             <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+            {/* ATS Optimization */}
+            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
               <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">ATS Optimization</h2>
               <div className="mb-4">
                 <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
