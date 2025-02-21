@@ -33,14 +33,16 @@ const HomePage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-blue-900">
+    <div className="container mx-auto px-4 py-12 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="text-center"
       >
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">AI-Powered Resume Analysis</h1>
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        AI-Powered Resume Analysis
+            </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
           Upload your resume and get instant feedback to improve your chances of landing your dream job.
         </p>

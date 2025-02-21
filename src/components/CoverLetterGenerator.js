@@ -248,8 +248,8 @@ ${coverLetterData.personalDetails.name}`
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div initial="hidden" animate="visible" variants={containerVariants} className="space-y-8">
           <motion.div variants={itemVariants} className="text-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Cover Letter Generator
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Cover Letter Generator
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300">
               Create professional cover letters tailored to your job applications
@@ -280,15 +280,14 @@ ${coverLetterData.personalDetails.name}`
             <div className="flex space-x-4">
               {/* Template selector and other controls with enhanced styling */}
               <select
-                value={activeTemplate}
-                onChange={(e) => setActiveTemplate(e.target.value)}
-                className="px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg focus:ring-2 focus:ring-indigo-500 transition-all duration-300"
-              >
-                <option value="modern">Modern Template</option>
-                <option value="classic">Classic Template</option>
-                <option value="creative">Creative Template</option>
-              </select>
-
+    value={activeTemplate}
+    onChange={(e) => setActiveTemplate(e.target.value)}
+    className="px-5 py-3 rounded-xl bg-white text-gray-900 border border-gray-200 shadow-lg focus:ring-2 focus:ring-indigo-500 transition-all duration-300 w-52"
+  >
+    <option value="modern">Modern Template</option>
+    <option value="classic">Classic Template</option>
+    <option value="creative">Creative Template</option>
+  </select>
               <motion.button
                 variants={buttonVariants}
                 whileHover="hover"

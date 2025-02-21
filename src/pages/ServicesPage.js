@@ -108,21 +108,22 @@ const ServicesPage = () => {
                 placeholder="Search services..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-3 w-full sm:w-80 rounded-xl bg-white/80 dark:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                className="pl-10 pr-4 py-3 w-full sm:w-80 rounded-xl bg-white/80 dark:bg-gray-800/80 border border-gray-400 dark:border-gray-700/50 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
               />
             </div>
             <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="px-4 py-3 rounded-xl bg-white/80 dark:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
-            >
-              <option value="all">All Services</option>
-              <option value="analysis">Analysis</option>
-              <option value="coaching">Coaching</option>
-              <option value="preparation">Preparation</option>
-              <option value="optimization">Optimization</option>
-            </select>
+    value={filter}
+    onChange={(e) => setFilter(e.target.value)}
+    className="px-5 py-3 rounded-xl bg-white text-gray-900 border border-gray-400 focus:ring-2 focus:ring-purple-500 transition-all duration-300 w-52"
+  >
+    <option value="all">All Services</option>
+    <option value="analysis">Analysis</option>
+    <option value="coaching">Coaching</option>
+    <option value="preparation">Preparation</option>
+    <option value="optimization">Optimization</option>
+  </select>
           </motion.div>
+          
 
           <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredServices.map((service, index) => (

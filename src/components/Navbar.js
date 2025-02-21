@@ -65,25 +65,25 @@ const Navbar = ({ toggleDarkMode }) => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="px-3 py-2 rounded-lg bg-gray-100/50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-200 border border-gray-200/50 dark:border-gray-700/50 focus:ring-2 focus:ring-indigo-500 transition-all duration-300"
-            >
-              <option value="en">English</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-            </select>
+  <select
+    value={language}
+    onChange={(e) => setLanguage(e.target.value)}
+    className="px-4 py-3 rounded-lg bg-gray-100/50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 transition-all duration-300 w-40"
+  >
+    <option value="en">English</option>
+    <option value="es">Español</option>
+    <option value="fr">Français</option>
+  </select>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={toggleDarkMode}
-              className="p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300"
-            >
-              {theme === "dark" ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
-            </motion.button>
-          </div>
+  <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={toggleDarkMode}
+    className="p-3 rounded-lg text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 w-12 h-12 flex items-center justify-center"
+  >
+    {theme === "dark" ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
+  </motion.button>
+</div>
         </div>
       </div>
     </motion.nav>

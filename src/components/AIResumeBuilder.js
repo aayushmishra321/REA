@@ -773,8 +773,10 @@ const AIResumeBuilder = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ${darkMode ? "dark" : ""}`}>
-        <h1 className="text-4xl font-bold text-center mb-8 text-gray-900 dark:text-white">AI Resume Builder</h1>
+      <div className="container mx-auto px-4 py-12 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        AI Resume Builder
+            </h1>
         {notification.message && (
           <div
             className={`mb-4 p-4 rounded-md ${
