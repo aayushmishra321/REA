@@ -20,6 +20,7 @@ import axios from "axios"
 import { debounce } from "lodash"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
+import { motion } from "framer-motion"
 
 // Import resume templates
 import ClassicTemplate from "./resumeTemplates/ClassicTemplate"
@@ -129,7 +130,12 @@ const ResumePreview = ({
   return (
     <div className="space-y-6">
       {/* Preview Controls */}
-      <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6"
+      >
         <h2 className="text-2xl font-semibold mb-4">Resume Preview</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-4">
@@ -228,13 +234,13 @@ const ResumePreview = ({
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
       {/* Resume Preview Area - Updated styling */}
-      <div className="relative">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="relative">
         <div className="absolute inset-0 bg-gray-100 dark:bg-gray-900 rounded-lg" />
         <div className="relative">
           <div className="overflow-auto max-h-[842px] border border-gray-200 dark:border-gray-700 rounded-lg">
-            <div
+            <motion.div
               ref={resumeRef}
               className={`bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 w-full ${darkMode ? "dark" : ""}`}
               style={{
@@ -246,7 +252,12 @@ const ResumePreview = ({
             >
               <div className="space-y-6">
                 {/* Personal Details */}
-                <div className="mb-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="mb-8"
+                >
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                     {data.personalDetails.name || "Your Name"}
                   </h1>
@@ -257,54 +268,86 @@ const ResumePreview = ({
                     {data.personalDetails.linkedin && <p>LinkedIn: {data.personalDetails.linkedin}</p>}
                     {data.personalDetails.github && <p>GitHub: {data.personalDetails.github}</p>}
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Professional Summary */}
                 {data.summary && (
-                  <div className="mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                  >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Professional Summary</h2>
                     <p className="text-gray-700 dark:text-gray-300">{data.summary}</p>
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Experience */}
                 {data.experience.length > 0 && (
-                  <div className="mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                  >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Experience</h2>
                     <div className="space-y-4">
                       {data.experience.map((exp, index) => (
-                        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="border-b border-gray-200 dark:border-gray-700 pb-4"
+                        >
                           <h3 className="font-semibold text-gray-800 dark:text-gray-200">{exp.position}</h3>
                           <p className="text-gray-600 dark:text-gray-400">{exp.company}</p>
                           <p className="text-sm text-gray-500 dark:text-gray-400">
                             {exp.startDate} - {exp.endDate}
                           </p>
                           <p className="mt-2 text-gray-700 dark:text-gray-300">{exp.description}</p>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Education */}
                 {data.education.length > 0 && (
-                  <div className="mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                  >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Education</h2>
                     <div className="space-y-4">
                       {data.education.map((edu, index) => (
-                        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="border-b border-gray-200 dark:border-gray-700 pb-4"
+                        >
                           <h3 className="font-semibold text-gray-800 dark:text-gray-200">{edu.degree}</h3>
                           <p className="text-gray-600 dark:text-gray-400">{edu.institution}</p>
                           <p className="text-sm text-gray-500 dark:text-gray-400">{edu.graduationDate}</p>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Skills */}
                 {data.skills.length > 0 && (
-                  <div className="mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                  >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Skills</h2>
                     <div className="flex flex-wrap gap-2">
                       {data.skills.map((skill, index) => (
@@ -316,69 +359,107 @@ const ResumePreview = ({
                         </span>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
                 {/* Volunteering */}
                 {data.volunteering.length > 0 && (
-                  <div className="mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                  >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Volunteering</h2>
                     <div className="space-y-4">
                       {data.volunteering.map((volunteer, index) => (
-                        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="border-b border-gray-200 dark:border-gray-700 pb-4"
+                        >
                           <h3 className="font-semibold text-gray-800 dark:text-gray-200">{volunteer.name}</h3>
                           <p className="text-gray-600 dark:text-gray-400">{volunteer.description}</p>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Awards */}
                 {data.awards.length > 0 && (
-                  <div className="mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                  >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Awards</h2>
                     <div className="space-y-4">
                       {data.awards.map((award, index) => (
-                        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="border-b border-gray-200 dark:border-gray-700 pb-4"
+                        >
                           <h3 className="font-semibold text-gray-800 dark:text-gray-200">{award.name}</h3>
                           <p className="text-gray-600 dark:text-gray-400">{award.description}</p>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Publications */}
                 {data.publications.length > 0 && (
-                  <div className="mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                  >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Publications</h2>
                     <div className="space-y-4">
                       {data.publications.map((publication, index) => (
-                        <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="border-b border-gray-200 dark:border-gray-700 pb-4"
+                        >
                           <h3 className="font-semibold text-gray-800 dark:text-gray-200">{publication.name}</h3>
                           <p className="text-gray-600 dark:text-gray-400">{publication.description}</p>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Additional Sections */}
                 {data.certifications.length > 0 && (
-                  <div className="mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                  >
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Certifications</h2>
                     <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
                       {data.certifications.map((cert, index) => (
                         <li key={index}>{cert.name}</li>
                       ))}
                     </ul>
-                  </div>
+                  </motion.div>
                 )}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Preview Zoom Controls */}
       <div className="flex justify-center space-x-4 mt-4">
@@ -773,24 +854,44 @@ const AIResumeBuilder = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="container mx-auto px-4 py-12 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-        AI Resume Builder
-            </h1>
+      <motion.div
+      
+        className={` className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ${darkMode ? "dark" : ""}`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.h1
+  className="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent text-center"
+  initial={{ y: -20 }}
+  animate={{ y: 0 }}
+  transition={{ duration: 0.5 }}
+>
+  AI Resume Builder
+</motion.h1>
+
         {notification.message && (
-          <div
+          <motion.div
             className={`mb-4 p-4 rounded-md ${
               notification.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
             }`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
             {notification.message}
-          </div>
+          </motion.div>
         )}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Form Inputs */}
           <div className="space-y-6">
             {/* Personal Details */}
-            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+            <motion.div
+              className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Personal Details</h2>
               {Object.keys(resumeData.personalDetails).map((field) => (
                 <div key={field} className="mb-4">
@@ -814,10 +915,15 @@ const AIResumeBuilder = () => {
                 <LinkedinFilled className="mr-2" />
                 Import from LinkedIn
               </button>
-            </div>
+            </motion.div>
 
             {/* Skills Section */}
-            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+            <motion.div
+              className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <h2 className="text-2xl font-semibold mb-4">Skills</h2>
               <div className="flex flex-wrap gap-2 mb-4">
                 {resumeData.skills.map((skill, index) => (
@@ -875,11 +981,17 @@ const AIResumeBuilder = () => {
                   </div>
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {/* Other sections */}
             {["experience", "education", "certifications", "volunteering", "awards", "publications"].map((section) => (
-              <div key={section} className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+              <motion.div
+                key={section}
+                className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-2xl font-semibold">{section.charAt(0).toUpperCase() + section.slice(1)}</h2>
                   <button
@@ -929,7 +1041,7 @@ const AIResumeBuilder = () => {
                     </button>
                   </div>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -952,7 +1064,12 @@ const AIResumeBuilder = () => {
               handleExportPNG={handleExportPNG}
             />
             {/* ATS Optimization */}
-            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+            <motion.div
+              className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">ATS Optimization</h2>
               <div className="mb-4">
                 <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -1004,10 +1121,15 @@ const AIResumeBuilder = () => {
                   </ul>
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {/* Save and Share */}
-            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+            <motion.div
+              className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <h2 className="text-2xl font-semibold mb-4">Save and Share</h2>
               <div className="flex space-x-4">
                 <button
@@ -1061,10 +1183,10 @@ const AIResumeBuilder = () => {
                   </ul>
                 </div>
               )}
-            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </DndProvider>
   )
 }
