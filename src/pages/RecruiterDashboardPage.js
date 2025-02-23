@@ -75,7 +75,7 @@ const RecruiterDashboardPage = () => {
       <div className="grid grid-cols-1 gap-8 mb-12">
         {/* Bulk Resume Upload Section */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-4">Bulk Resume Upload</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Bulk Resume Upload</h2>
           <div
             {...getRootProps()}
             className={`p-8 border-2 border-dashed rounded-lg text-center cursor-pointer transition-all duration-300 ${
@@ -97,7 +97,7 @@ const RecruiterDashboardPage = () => {
 
         {/* Candidate Scores Section */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-4">Candidate Scores</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Candidate Scores</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={dashboardData.candidateScores}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -112,7 +112,7 @@ const RecruiterDashboardPage = () => {
 
         {/* ATS Rankings Section */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-4">ATS Rankings</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">ATS Rankings</h2>
           <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
             <div className="flex items-center">
               <FunnelIcon className="h-5 w-5 text-gray-400 mr-2" />

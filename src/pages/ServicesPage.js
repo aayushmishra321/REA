@@ -108,7 +108,7 @@ const ServicesPage = () => {
                 placeholder="Search services..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-3 w-full sm:w-80 rounded-xl bg-white/80 dark:bg-gray-800/80 border border-gray-400 dark:border-gray-700/50 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                className="pl-10 pr-4 py-3 w-full sm:w-80 rounded-xl bg-white/80 light:bg-gray-800/80 border border-gray-400 dark:border-gray-700/50 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
               />
             </div>
             <select

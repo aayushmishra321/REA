@@ -136,7 +136,7 @@ const ResumePreview = ({
         transition={{ duration: 0.5 }}
         className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6"
       >
-        <h2 className="text-2xl font-semibold mb-4">Resume Preview</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Resume Preview</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-4">
             <div>
@@ -924,7 +924,7 @@ const AIResumeBuilder = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h2 className="text-2xl font-semibold mb-4">Skills</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Skills</h2>
               <div className="flex flex-wrap gap-2 mb-4">
                 {resumeData.skills.map((skill, index) => (
                   <div
@@ -993,7 +993,7 @@ const AIResumeBuilder = () => {
                 transition={{ duration: 0.5 }}
               >
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-2xl font-semibold">{section.charAt(0).toUpperCase() + section.slice(1)}</h2>
+                  <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">{section.charAt(0).toUpperCase() + section.slice(1)}</h2>
                   <button
                     onClick={() => setShowSections({ ...showSections, [section]: !showSections[section] })}
                     className="text-gray-500 hover:text-gray-700"
@@ -1130,7 +1130,7 @@ const AIResumeBuilder = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h2 className="text-2xl font-semibold mb-4">Save and Share</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Save and Share</h2>
               <div className="flex space-x-4">
                 <button
                   onClick={handleSaveResume}

@@ -83,7 +83,7 @@ const ContactPage = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                        className="w-full px-4 py-3 rounded-xl bg-white light:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
                       />
                     </div>
                     <div>
@@ -100,7 +100,7 @@ const ContactPage = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                        className="w-full px-4 py-3 rounded-xl bg-white light:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
                       />
                     </div>
                     <div>
@@ -117,7 +117,7 @@ const ContactPage = () => {
                         value={formData.message}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                        className="w-full px-4 py-3 rounded-xl bg-white light:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 transition-all duration-300"
                       ></textarea>
                     </div>
                   </div>
