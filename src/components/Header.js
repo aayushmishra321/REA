@@ -29,21 +29,21 @@ function Header() {
       initial="hidden"
       animate="visible"
       variants={headerVariants}
-      className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg shadow-lg border-b border-gray-200 dark:border-gray-800 transition-all duration-300"
+      className="bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-800 transition-all duration-300"
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
         <div className="w-full py-6 flex items-center justify-between">
           <motion.div variants={linkVariants} whileHover="hover" whileTap="tap" className="flex items-center">
             <Link to="/">
               <span className="sr-only">Resume Analyzer</span>
-              <img className="h-10 w-auto" src="/logo.svg" alt="Logo" />
+              <img className="h-10 w-auto filter drop-shadow-md" src="/logo.svg" alt="Logo" />
             </Link>
           </motion.div>
           <div className="ml-10 space-x-4">
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
               <Link
                 to="/"
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg transition-all duration-300"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-300"
               >
                 Home
               </Link>
@@ -51,7 +51,7 @@ function Header() {
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
               <Link
                 to="/about"
-                className="inline-flex items-center px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-base font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 shadow-md hover:shadow-lg transition-all duration-300"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 transition-colors duration-300"
               >
                 About
               </Link>
